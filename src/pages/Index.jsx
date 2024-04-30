@@ -1,15 +1,52 @@
-// Complete the Index page component here
-// Use chakra-ui
-import { Button } from "@chakra-ui/react"; // example
-import { FaPlus } from "react-icons/fa"; // example - use react-icons/fa for icons
+import { Box, SimpleGrid, IconButton, useClipboard, useToast } from '@chakra-ui/react';
+import { FaRegCopy } from 'react-icons/fa';
+import React from 'react';
+
+const emojis = [
+  "😀", "😃", "😄", "😁", "😆", "😅", "😂", "🤣", "😊", "😇",
+  "🙂", "🙃", "😉", "😌", "😍", "🥰", "😘", "😗", "😙", "😚",
+  "😋", "😛", "😝", "😜", "🤪", "🤨", "🧐", "🤓", "😎", "🥸",
+  "🤩", "🥳", "😏", "😒", "😞", "😔", "😟", "😕", "🙁", "☹️",
+  "😣", "😖", "😫", "😩", "🥺", "😢", "😭", "😤", "😠", "😡",
+  "🤬", "🤯", "😳", "🥵", "🥶", "😱", "😨", "😰", "😥", "😓",
+  "🤗", "🤔", "🤭", "🤫", "🤥", "😶", "😐", "😑", "😬", "🙄",
+  "😯", "😦", "😧", "😮", "😲", "🥱", "😴", "🤤", "😪", "😵",
+  "🤐", "🥴", "🤢", "🤮", "🤧", "😷", "🤒", "🤕", "🤑", "🤠",
+  "😈", "👿", "👹", "👺", "🤡", "💩", "👻", "💀", "☠️", "👽"
+];
 
 const Index = () => {
-  // TODO: Create the website here!
+  const { onCopy } = useClipboard();
+  const toast = useToast();
+
+  const handleCopy = (emoji) => {
+    onCopy(emoji);
+    toast({
+      title: 'Copied!',
+      description: `${emoji} copied to clipboard.`,
+      status: 'success',
+      duration: 2000,
+      isClosable: true,
+    });
+  };
+
   return (
-    <Button>
-      Hello world! <FaPlus />
-    </Button>
-  ); // example
+    <Box p={5}>
+      <SimpleGrid columns={{ base: 5, md: 10 }} spacing={5}>
+        {emojis.map((emoji, index) => (
+          <IconButton
+            key={index}
+            aria-label={`Copy ${emoji}`}
+            icon={<Box as="span">{emoji}</Box>}
+            onClick={() => handleCopy(emoji)}
+            variant="outline"
+            size="lg"
+            fontSize="2xl"
+          />
+        ))}
+      </SimpleGrid>
+    </Box>
+  );
 };
 
 export default Index;
